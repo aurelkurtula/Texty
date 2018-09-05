@@ -1,0 +1,1 @@
+Creating a basic text editor with Electron
