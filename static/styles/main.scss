@@ -19,24 +19,43 @@ html {
     background: var(--sidebar-color);
     color: var(--sidebar-text);
     border-right: 1px solid var(--border-color);
-    .highlight{
-        background: #334441;
-        color: #50C68A;
-    }
-    li {
-        margin: 15px 3px;
-    display: inline-block;
-    border-bottom: 1px solid var(--border-color);
-    width: 100%;
-    padding: 0;
-    padding-bottom: 20px;
-    }
     height: 100%;
     width: 23%;
     position: fixed;
     left: 0; top: 0;
     overflow-y: scroll;
     overflow-x: hidden;
+    .highlight{
+        background: #334441;
+        color: #50C68A;
+    }
+    li:not(.form_wrapper){
+        margin: 15px 3px;
+        display: inline-block;
+        border-bottom: 1px solid var(--border-color);
+        width: 100%;
+        padding: 0;
+        padding-bottom: 20px;
+    }
+    li form{
+        margin-top:-44px;
+        transition: all .30s ease-in-out;
+        &.show{
+            margin-top:0;
+        }
+    }
+    li input{ //aurel
+        padding: 15px 5px;
+        border: none;
+        width: 100%;
+        border-bottom: 1px solid var(--border-color);
+        background: transparent;
+        outline: none;
+        color: white;
+        
+
+    }
+    
 }
 #content{
     white-space:pre-wrap;

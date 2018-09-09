@@ -59,13 +59,33 @@ html {
   color: #50C68A;
 }
 
-#titles li {
+#titles li:not(.form_wrapper) {
   margin: 15px 3px;
   display: inline-block;
   border-bottom: 1px solid var(--border-color);
   width: 100%;
   padding: 0;
   padding-bottom: 20px;
+}
+
+#titles li form {
+  margin-top: -44px;
+  -webkit-transition: all .30s ease-in-out;
+  transition: all .30s ease-in-out;
+}
+
+#titles li form.show {
+  margin-top: 0;
+}
+
+#titles li input {
+  padding: 15px 5px;
+  border: none;
+  width: 100%;
+  border-bottom: 1px solid var(--border-color);
+  background: transparent;
+  outline: none;
+  color: white;
 }
 
 #content {
