@@ -1,10 +1,27 @@
 (function(){
-    const { ipcRenderer } = require('electron');  
+    const { ipcRenderer, remote } = require('electron');  
     const fs = require('fs')
     const path = require('path')
     const { readTitles, handleNewFile } = require(path.resolve('actions/uiActions'))
-    const { NEW_DOCUMENT_NEEDED, WRITE_NEW_FILE_NEEDED, NEW_FILE_WRITTEN, SAVED, SAVE_NEEDED } = require(path.resolve('actions/types'))
+    const { NEW_DOCUMENT_NEEDED, WRITE_NEW_FILE_NEEDED, NEW_FILE_WRITTEN, SAVED, PREFERENCE_SAVED, SAVE_NEEDED } = require(path.resolve('actions/types'))
     
+    let userDataPath = remote.app.getPath('userData');
+    let filePath = path.join(userDataPath, 'preferences.json')
+    
+    let usersStyles  = JSON.parse( fs.readFileSync(filePath) )
+
+    for(let style in usersStyles) {
+        document.documentElement.style.setProperty(`--${style}`, usersStyles[style]);
+    }
+    ipcRenderer.on(PREFERENCE_SAVED, function (event, inputs) {
+        for(let style in inputs) {
+            document.documentElement.style.setProperty(`--${style}`, inputs[style]);
+        }
+    });
+    
+    
+    
+    let documentTitle = document.getElementById('customtitle')
     let readFileContent = function(dir, el){
         el.addEventListener('click', function(e){ // clicking on sidebar titles
             fs.readFile(dir, (err, data) => {
@@ -41,8 +58,8 @@
     })
 
     document.getElementById('content').onkeyup = e => { // alerting system that files have been updated
-        if(!document.title.endsWith("*")){ 
-            document.title += ' *' // add asterisk when starting to edit, BUT only once
+        if(!document.getElementById('customtitle').innerText.endsWith("*")){ 
+            document.getElementById('customtitle').innerText += ' *' // add asterisk when starting to edit, BUT only once
         }; 
         ipcRenderer.send(SAVE_NEEDED, { // alerting ./component/Menu.js
             content: e.target.innerHTML,
@@ -57,7 +74,7 @@
         document.querySelector('body').prepend(el)
         setTimeout(function() { // remove notification after 1 second
           document.querySelector('body').removeChild(el);
-          document.title = document.title.slice(0,-1) // remove asterisk from title
+          documentTitle.innerText = documentTitle.innerText.slice(0,-1) // remove asterisk from title
         }, 1000);
       });
 })()

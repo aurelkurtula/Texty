@@ -1,9 +1,14 @@
-const {app, Menu, ipcMain } = require('electron')
-const { NEW_DOCUMENT_NEEDED, SAVE_NEEDED, SAVED } = require('../actions/types')
+const {app, Menu, ipcMain, BrowserWindow } = require('electron')
+const path = require('path')
+const { NEW_DOCUMENT_NEEDED, SAVE_NEEDED, SAVED, PREFERENCE_SAVE_DATA_NEEDED,PREFERENCE_SAVED } = require('../actions/types')
 const fs = require('fs')
 let contentToSave = ''
 ipcMain.on(SAVE_NEEDED, (event, content) => {
     contentToSave = content 
+})
+let inputs;
+ipcMain.on(PREFERENCE_SAVE_DATA_NEEDED, (event, preferences) => {
+    inputs = preferences
 })
 
 module.exports = function(window){
@@ -11,7 +16,27 @@ module.exports = function(window){
         {
             label: app.getName(),
             submenu: [
-                { label: `Hello`, click: () => console.log("Hello world") }
+                {
+                    label: 'Preferences',
+                    accelerator: 'cmd+,', // shortcut
+                    click: _ => {
+                        const htmlPath = path.join('file://', __dirname, '../static/preferences.html')
+                        let prefWindow = new BrowserWindow({ y: 200, x:200, width: 500, height: 300, resizable: false })
+                        prefWindow.loadURL(htmlPath)
+                        prefWindow.show()
+                       //let devtools = new BrowserWindow()
+   // prefWindow.webContents.setDevToolsWebContents(devtools.webContents)
+    //prefWindow.webContents.openDevTools({mode: 'detach'})
+                        prefWindow.on('close', function () {
+                            prefWindow = null 
+                            userDataPath = app.getPath('userData');
+                            filePath = path.join(userDataPath, 'preferences.json')
+                            inputs && fs.writeFileSync(filePath, JSON.stringify(inputs));
+                            window.webContents.send(PREFERENCE_SAVED, inputs); 
+                       })
+                        
+                    },
+                },
             ]
         },
         {

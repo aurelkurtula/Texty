@@ -22,7 +22,7 @@ html {
     height: 100%;
     width: 23%;
     position: fixed;
-    left: 0; top: 0;
+    left: 0; 
     overflow-y: scroll;
     overflow-x: hidden;
     .highlight{
@@ -44,7 +44,7 @@ html {
             margin-top:0;
         }
     }
-    li input{ //aurel
+    li input{ 
         padding: 15px 5px;
         border: none;
         width: 100%;
@@ -79,4 +79,19 @@ html {
    transition: opacity .25s ease-in-out;
    -moz-transition: opacity .25s ease-in-out;
    -webkit-transition: opacity .25s ease-in-out;
+}
+@import url('https://fonts.googleapis.com/css?family=Gochi+Hand');
+#customtitle_wrap{
+    -webkit-app-region: drag;
+    background: var(--sidebar-color) ;
+    border-top: var(--border-color) 1px solid;
+    text-align: center;
+    h1{
+        color: var(--sidebar-text);
+        font-family: 'Gochi Hand', cursive;
+        padding: 5px 0;
+        font-size: 1.5rem;
+        font-weight: normal;
+        text-transform: uppercase;
+    }
 }

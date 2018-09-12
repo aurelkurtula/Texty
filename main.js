@@ -7,18 +7,18 @@ let window = null
 let devtools = null 
 
 app.on('ready', function(){
-    devtools = new BrowserWindow()
-    window = new BrowserWindow({ x: 0, y: 0, width:800, height:600})
+    
+    window = new BrowserWindow({ x: 0, y: 0, width:800, height:600, titleBarStyle: 'hidden' })
     window.setTitle('Texty')
     window.loadURL(path.join('file://', __dirname, 'static/index.html'))
     Menu.setApplicationMenu(menu(window))
-
-    window.webContents.setDevToolsWebContents(devtools.webContents)
-    window.webContents.openDevTools({mode: 'detach'})
-    window.webContents.once('did-finish-load', function () {   
-        let windowBounds = window.getBounds();  
-        devtools.setPosition(windowBounds.x + windowBounds.width, windowBounds.y);
-    });
+    // devtools = new BrowserWindow()
+    // window.webContents.setDevToolsWebContents(devtools.webContents)
+    // window.webContents.openDevTools({mode: 'detach'})
+    // window.webContents.once('did-finish-load', function () {   
+    //     let windowBounds = window.getBounds();  
+    //     devtools.setPosition(windowBounds.x + windowBounds.width, windowBounds.y);
+    // });
 
     ipcMain.on(WRITE_NEW_FILE_NEEDED, (event, {dir}) => {
        fs.writeFile(dir, `Start editing ${dir}`, function(err){
@@ -32,7 +32,7 @@ app.on('ready', function(){
     // Set the devtools position when the parent window is moved.
     window.on('move', function () { 
         let windowBounds = window.getBounds();
-        devtools.setPosition(windowBounds.x + windowBounds.width, windowBounds.y);
+        //devtools.setPosition(windowBounds.x + windowBounds.width, windowBounds.y);
     });
 
     
