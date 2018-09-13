@@ -63,14 +63,11 @@ module.exports = function(window){
                 {
                     label: 'Save',
                     click: () => {
-                        
                         if(contentToSave != ''){
-                            if(contentToSave != ''){
-                                fs.writeFile(contentToSave.fileDir, contentToSave.content, (err) => {
-                                    if (err) throw err;
-                                    window.webContents.send(SAVED, 'File Saved')
-                                });
-                            }
+                            fs.writeFile(contentToSave.fileDir, contentToSave.content, (err) => {
+                                if (err) throw err;
+                                window.webContents.send(SAVED, 'File Saved')
+                            });
                         }
                     },
                     accelerator: 'cmd+S'
